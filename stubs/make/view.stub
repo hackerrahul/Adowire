@@ -1,0 +1,11 @@
+{{#var componentFileName = generators.viewFileName(entity.name)}}
+{{#var wireName = [entity.path, entity.name].filter(function(s){ return s && s !== './' }).join('/').replace(/\//g, '.')}}
+{{#var edgeComment = '{{-- Wire component: ' + wireName + ' --\x7d\x7d'}}
+{{{
+  exports({
+    to: app.makePath('resources/views/adowire', entity.path, componentFileName)
+  })
+}}}
+<div>
+  {{ edgeComment }}
+</div>

@@ -1,0 +1,31 @@
+{{{
+  exports({
+    to: app.configPath('adowire.ts')
+  })
+}}}
+import type { AdowireConfig } from 'adowire/types'
+
+const adowireConfig: AdowireConfig = {
+  /**
+   * URL prefix for the Adowire message endpoint.
+   * The route POST /adowire/message is registered automatically.
+   */
+  prefix: '/adowire',
+
+  /**
+   * Directory (relative to app root) where wire component classes live.
+   */
+  componentsPath: 'app/adowire',
+
+  /**
+   * Edge.js view prefix. Component 'counter' renders 'adowire/counter.edge'.
+   */
+  viewPrefix: 'adowire',
+
+  /**
+   * Secret used to sign snapshots. Defaults to APP_KEY.
+   */
+  secret: process.env.APP_KEY,
+}
+
+export default adowireConfig

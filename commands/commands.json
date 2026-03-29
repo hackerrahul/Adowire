@@ -1,0 +1,184 @@
+{
+  "version": 1,
+  "commands": [
+    {
+      "commandName": "make:adowire",
+      "description": "Create a new Adowire wire component class and its Edge.js view template",
+      "help": "",
+      "namespace": "make",
+      "aliases": [],
+      "flags": [
+        {
+          "name": "page",
+          "flagName": "page",
+          "required": false,
+          "type": "boolean",
+          "description": "Generate a page component with @Layout and @Title decorators",
+          "alias": "p"
+        },
+        {
+          "name": "class",
+          "flagName": "class",
+          "required": false,
+          "type": "boolean",
+          "description": "Generate the component class only (skip the Edge.js view)",
+          "alias": "c"
+        },
+        {
+          "name": "view",
+          "flagName": "view",
+          "required": false,
+          "type": "boolean",
+          "description": "Generate the Edge.js view only (skip the component class)",
+          "alias": "v"
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "argumentName": "name",
+          "required": true,
+          "description": "Component name (e.g. counter, posts/create)",
+          "type": "string"
+        }
+      ],
+      "options": {
+        "allowUnknownFlags": false
+      },
+      "filePath": "make_adowire.js"
+    },
+    {
+      "commandName": "adowire:list",
+      "description": "List all registered Adowire wire components",
+      "help": "",
+      "namespace": "adowire",
+      "aliases": [],
+      "flags": [
+        {
+          "name": "json",
+          "flagName": "json",
+          "required": false,
+          "type": "boolean",
+          "description": "Output as JSON",
+          "alias": "j"
+        }
+      ],
+      "args": [],
+      "options": {
+        "allowUnknownFlags": false,
+        "startApp": true
+      },
+      "filePath": "adowire_list.js"
+    },
+    {
+      "commandName": "adowire:layout",
+      "description": "Create the default Adowire layout template (resources/views/layouts/adowire.edge)",
+      "help": "",
+      "namespace": "adowire",
+      "aliases": [],
+      "flags": [
+        {
+          "name": "name",
+          "flagName": "name",
+          "required": false,
+          "type": "string",
+          "description": "Layout name without extension (default: adowire)",
+          "alias": "n"
+        },
+        {
+          "name": "force",
+          "flagName": "force",
+          "required": false,
+          "type": "boolean",
+          "description": "Overwrite the layout if it already exists",
+          "alias": "f"
+        }
+      ],
+      "args": [],
+      "options": {
+        "allowUnknownFlags": false
+      },
+      "filePath": "adowire_layout.js"
+    },
+    {
+      "commandName": "adowire:move",
+      "description": "Move or rename a wire component (class + view) and update the class name",
+      "help": "",
+      "namespace": "adowire",
+      "aliases": [],
+      "flags": [],
+      "args": [
+        {
+          "name": "from",
+          "argumentName": "from",
+          "required": true,
+          "description": "Current component name (e.g. counter, posts/create)",
+          "type": "string"
+        },
+        {
+          "name": "to",
+          "argumentName": "to",
+          "required": true,
+          "description": "New component name (e.g. widgets/counter, forms/create)",
+          "type": "string"
+        }
+      ],
+      "options": {
+        "allowUnknownFlags": false
+      },
+      "filePath": "adowire_move.js"
+    },
+    {
+      "commandName": "adowire:delete",
+      "description": "Delete a wire component class and its Edge.js view template",
+      "help": "",
+      "namespace": "adowire",
+      "aliases": [],
+      "flags": [
+        {
+          "name": "force",
+          "flagName": "force",
+          "required": false,
+          "type": "boolean",
+          "description": "Skip confirmation prompt",
+          "alias": "f"
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "argumentName": "name",
+          "required": true,
+          "description": "Component name to delete (e.g. counter, posts/create)",
+          "type": "string"
+        }
+      ],
+      "options": {
+        "allowUnknownFlags": false
+      },
+      "filePath": "adowire_delete.js"
+    },
+    {
+      "commandName": "adowire:stubs",
+      "description": "Publish Adowire stubs to stubs/vendor/adowire/ for customisation",
+      "help": "",
+      "namespace": "adowire",
+      "aliases": [],
+      "flags": [
+        {
+          "name": "force",
+          "flagName": "force",
+          "required": false,
+          "type": "boolean",
+          "description": "Overwrite stubs that already exist in the destination",
+          "alias": "f"
+        }
+      ],
+      "args": [],
+      "options": {
+        "allowUnknownFlags": false
+      },
+      "filePath": "adowire_stubs.js"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{{#var componentName = generators.modelName(entity.name)}}
+{{#var componentFileName = generators.modelFileName(entity.name)}}
+{{#var wireName = [entity.path, entity.name].filter(function(s){ return s && s !== './' }).join('/').replace(/\//g, '.')}}
+{{{
+  exports({
+    to: app.makePath('app/adowire', entity.path, componentFileName)
+  })
+}}}
+import { WireComponent } from 'adowire'
+
+/**
+ * Wire component: {{ wireName }}
+ *
+ * @see resources/views/adowire/{{ wireName.replace(/\./g, '/') }}.edge
+ */
+export default class {{ componentName }} extends WireComponent {
+  // ── Public properties (auto-synced with client snapshot) ─────────────────
+
+  // ── Lifecycle ────────────────────────────────────────────────────────────
+
+  async mount() {}
+
+  // ── Actions ──────────────────────────────────────────────────────────────
+}

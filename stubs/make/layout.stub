@@ -1,0 +1,19 @@
+{{#var layoutFileName = layoutName + '.edge'}}
+{{{
+  exports({
+    to: app.makePath('resources/views/layouts', layoutFileName)
+  })
+}}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>\{{ $title ?? 'App' }}</title>
+  @adowireStyles
+</head>
+<body>
+  \{{{ $body }}}
+  @adowireScripts
+</body>
+</html>
