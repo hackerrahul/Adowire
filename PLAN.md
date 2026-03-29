@@ -5,24 +5,6 @@
 
 ---
 
-## ⚙️ Agent / Terminal Bootstrap
-
-Before running **any** `yarn`, `node`, or `tsc` command in this project, activate the correct Node version with:
-
-```sh
-source "/Users/apple/Library/Application Support/Herd/config/nvm/nvm.sh" && nvm use default
-```
-
-This sets Node to **v25.8.1** (required — `package.json` enforces `>=24.0.0`).
-
-Full example:
-
-```sh
-source "/Users/apple/Library/Application Support/Herd/config/nvm/nvm.sh" && nvm use default && yarn quick:test
-```
-
----
-
 ## Table of Contents
 
 1. [Project Overview](#1-project-overview)
