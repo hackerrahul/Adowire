@@ -7,3 +7,5 @@ coverage
 build
 dist
 package-lock.json
+INTERNAL-README.MD
+COMMANDS_IMPL.md
