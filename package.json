@@ -1,7 +1,7 @@
 {
   "name": "adowire",
   "description": "A reactive component system for AdonisJS with Edge.js",
-  "version": "0.1.2",
+  "version": "0.1.6",
   "engines": {
     "node": ">=24.0.0"
   },
@@ -9,7 +9,9 @@
   "files": [
     "build",
     "!build/bin",
-    "!build/tests"
+    "!build/tests",
+    "README.md",
+    "LICENSE.md"
   ],
   "main": "build/index.js",
   "exports": {

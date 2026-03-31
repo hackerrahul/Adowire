@@ -8,7 +8,7 @@ A full-stack reactive component system for **AdonisJS v7** and **Edge.js v6** â€
 
 You write a TypeScript class with public properties and methods, pair it with an Edge template, and Adowire handles everything else â€” state serialization, AJAX roundtrips, DOM diffing, two-way binding, validation, streaming, and more.
 
-```/dev/null/example.ts#L1-L2
+```ts
 // No React. No Vue. No manual fetch calls.
 // Just TypeScript + Edge templates = reactive UI.
 ```
@@ -52,13 +52,13 @@ You write a TypeScript class with public properties and methods, pair it with an
 
 Install the package from npm:
 
-```/dev/null/sh#L1
+```ts
 npm install adowire
 ```
 
 Then configure it using the Ace CLI:
 
-```/dev/null/sh#L1
+```ts
 node ace configure adowire
 ```
 
@@ -72,7 +72,7 @@ This will:
 
 In your main layout template (e.g. `resources/views/layouts/main.edge`), add the Adowire style and script tags:
 
-```/dev/null/layout.edge#L1-L12
+```ts
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -97,7 +97,7 @@ In your main layout template (e.g. `resources/views/layouts/main.edge`), add the
 
 ### 1. Create a Component
 
-```/dev/null/sh#L1
+```ts
 node ace make:adowire counter
 ```
 
@@ -108,7 +108,7 @@ This generates two files:
 
 ### 2. Write the Component Class
 
-```/dev/null/app/adowire/counter.ts#L1-L18
+```ts
 import { WireComponent } from 'adowire'
 
 export default class Counter extends WireComponent {
@@ -130,7 +130,7 @@ export default class Counter extends WireComponent {
 
 ### 3. Write the Template
 
-```/dev/null/resources/views/adowire/counter.edge#L1-L8
+```ts
 <div>
   <h2>Count: {{ count }}</h2>
 
@@ -142,7 +142,7 @@ export default class Counter extends WireComponent {
 
 ### 4. Use It in Any Page
 
-```/dev/null/resources/views/pages/home.edge#L1-L5
+```ts
 @layout('layouts/main')
 
 @section('content')
@@ -153,7 +153,7 @@ export default class Counter extends WireComponent {
 
 Or use the HTML-style syntax:
 
-```/dev/null/resources/views/pages/home.edge#L1
+```ts
 <adowire:counter />
 ```
 
@@ -163,7 +163,7 @@ Or use the HTML-style syntax:
 
 A component is a TypeScript class that extends `WireComponent`. Public properties become reactive state. Public methods become callable actions.
 
-```/dev/null/app/adowire/todo_list.ts#L1-L23
+```ts
 import { WireComponent } from 'adowire'
 
 export default class TodoList extends WireComponent {
@@ -219,7 +219,7 @@ These methods trigger special effects on the client:
 
 ### Edge Tag Syntax
 
-```/dev/null/example.edge#L1-L5
+```ts
 {{-- Basic --}}
 @adowire('counter')
 @end
@@ -233,7 +233,7 @@ These methods trigger special effects on the client:
 
 The HTML preprocessor transforms `<adowire:...>` tags at compile time:
 
-```/dev/null/example.edge#L1-L14
+```ts
 {{-- Self-closing --}}
 <adowire:counter />
 
@@ -262,7 +262,7 @@ The HTML preprocessor transforms `<adowire:...>` tags at compile time:
 
 Page components are full-page Adowire components that replace traditional controller + view pairs. Use the `router.adowire()` macro in your routes file:
 
-```/dev/null/start/routes.ts#L1-L8
+```ts
 import router from '@adonisjs/core/services/router'
 
 // Simple page
@@ -274,13 +274,13 @@ router.adowire('/posts/:id', 'posts.show')
 
 Scaffold a page component with the `--page` flag:
 
-```/dev/null/sh#L1
+```ts
 node ace make:adowire dashboard --page
 ```
 
 This generates a component with `@Layout` and `@Title` decorators:
 
-```/dev/null/app/adowire/dashboard.ts#L1-L12
+```ts
 import { WireComponent, Layout, Title } from 'adowire'
 
 @Layout('layouts/adowire')
@@ -313,7 +313,7 @@ export default class Dashboard extends WireComponent {
 
 You can define hooks that target a specific property by name:
 
-```/dev/null/example.ts#L1-L7
+```ts
 // Called when 'search' is about to change
 updatingSearch(value: string) {
   console.log('Search changing to:', value)
@@ -333,7 +333,7 @@ updatedSearch(value: string) {
 
 Memoized per-request computed property. Accessible in templates like a regular property.
 
-```/dev/null/example.ts#L1-L8
+```ts
 import { WireComponent, Computed } from 'adowire'
 
 export default class Cart extends WireComponent {
@@ -346,7 +346,7 @@ export default class Cart extends WireComponent {
 }
 ```
 
-```/dev/null/example.edge#L1
+```ts
 <p>Total: ${{ total }}</p>
 ```
 
@@ -354,7 +354,7 @@ export default class Cart extends WireComponent {
 
 Prevents a property from being modified by the client. Throws `LockedPropertyException` if tampered with.
 
-```/dev/null/example.ts#L1-L5
+```ts
 import { WireComponent, Locked } from 'adowire'
 
 export default class Payment extends WireComponent {
@@ -367,7 +367,7 @@ export default class Payment extends WireComponent {
 
 Attaches a VineJS validation rule to a property. Validated automatically on update or manually via `this.validate()`.
 
-```/dev/null/example.ts#L1-L11
+```ts
 import { WireComponent, Validate } from 'adowire'
 import vine from '@vinejs/vine'
 
@@ -384,7 +384,7 @@ export default class Registration extends WireComponent {
 
 Sets the browser's `<title>` for page components.
 
-```/dev/null/example.ts#L1-L2
+```ts
 @Title('Settings')
 export default class Settings extends WireComponent { /* ... */ }
 ```
@@ -393,7 +393,7 @@ export default class Settings extends WireComponent { /* ... */ }
 
 Wraps a page component in a layout template.
 
-```/dev/null/example.ts#L1-L2
+```ts
 @Layout('layouts/adowire', { slot: 'main' })
 export default class Dashboard extends WireComponent { /* ... */ }
 ```
@@ -408,7 +408,7 @@ Directives are HTML attributes that wire up client-side behavior. All prefixed w
 
 Call a server-side method when the element is clicked.
 
-```/dev/null/example.edge#L1-L5
+```ts
 <button adowire:click="increment">+1</button>
 
 {{-- With arguments --}}
@@ -419,7 +419,7 @@ Call a server-side method when the element is clicked.
 
 Two-way data binding between an input and a component property.
 
-```/dev/null/example.edge#L1-L11
+```ts
 {{-- Deferred (synced on form submit) --}}
 <input adowire:model="name" />
 
@@ -440,7 +440,7 @@ Two-way data binding between an input and a component property.
 
 Intercept form submission and call a server-side method. Automatically collects `adowire:model` fields.
 
-```/dev/null/example.edge#L1-L5
+```ts
 <form adowire:submit="save">
   <input adowire:model="title" />
   <textarea adowire:model="body"></textarea>
@@ -452,7 +452,7 @@ Intercept form submission and call a server-side method. Automatically collects 
 
 Show, hide, or modify elements during server requests.
 
-```/dev/null/example.edge#L1-L14
+```ts
 {{-- Show while loading (hidden at rest) --}}
 <div adowire:loading>Loading...</div>
 
@@ -473,7 +473,7 @@ Show, hide, or modify elements during server requests.
 
 Automatically refresh the component at an interval.
 
-```/dev/null/example.edge#L1-L5
+```ts
 {{-- Poll every 2 seconds (default) --}}
 <div adowire:poll>{{ timestamp }}</div>
 
@@ -488,7 +488,7 @@ Automatically refresh the component at an interval.
 
 Show changes in the UI when local state differs from server state.
 
-```/dev/null/example.edge#L1-L5
+```ts
 {{-- Show element when input is dirty --}}
 <span adowire:dirty>Unsaved changes</span>
 
@@ -500,7 +500,7 @@ Show changes in the UI when local state differs from server state.
 
 Toggle element visibility based on a JavaScript expression (no server roundtrip).
 
-```/dev/null/example.edge#L1
+```ts
 <div adowire:show="isOpen">Dropdown content</div>
 ```
 
@@ -508,7 +508,7 @@ Toggle element visibility based on a JavaScript expression (no server roundtrip)
 
 Hide the element until the component has fully initialized. Prevents flash of unstyled content (FOUC).
 
-```/dev/null/example.edge#L1
+```ts
 <div adowire:cloak>This won't flash on load</div>
 ```
 
@@ -516,7 +516,7 @@ Hide the element until the component has fully initialized. Prevents flash of un
 
 Target element for real-time SSE streaming via `$stream()`.
 
-```/dev/null/example.edge#L1-L5
+```ts
 {{-- Append streamed content --}}
 <div adowire:stream="response"></div>
 
@@ -528,7 +528,7 @@ Target element for real-time SSE streaming via `$stream()`.
 
 Exclude an element from DOM morphing. Useful for third-party widgets.
 
-```/dev/null/example.edge#L1
+```ts
 <div adowire:ignore>This content won't be touched by morphdom</div>
 ```
 
@@ -536,7 +536,7 @@ Exclude an element from DOM morphing. Useful for third-party widgets.
 
 Provide a stable identity for morphdom diffing (like `key` in React/Vue).
 
-```/dev/null/example.edge#L1-L3
+```ts
 @each(item in items)
   <div adowire:key="{{ item.id }}">{{ item.name }}</div>
 @end
@@ -550,7 +550,7 @@ Adowire integrates with [VineJS](https://vinejs.dev/) for server-side validation
 
 ### Using Decorators
 
-```/dev/null/app/adowire/contact_form.ts#L1-L23
+```ts
 import { WireComponent, Validate } from 'adowire'
 import vine from '@vinejs/vine'
 
@@ -573,7 +573,7 @@ export default class ContactForm extends WireComponent {
 
 ### Using a Compiled Validator
 
-```/dev/null/example.ts#L1-L14
+```ts
 import vine from '@vinejs/vine'
 
 const validator = vine.compile(
@@ -596,7 +596,7 @@ export default class MyForm extends WireComponent {
 
 ### Displaying Errors in Templates
 
-```/dev/null/example.edge#L1-L7
+```ts
 <input adowire:model.live="email" />
 
 @error('email')
@@ -610,7 +610,7 @@ export default class MyForm extends WireComponent {
 
 Send real-time content to the browser using Server-Sent Events:
 
-```/dev/null/app/adowire/chat.ts#L1-L11
+```ts
 export default class Chat extends WireComponent {
   prompt = ''
 
@@ -622,7 +622,7 @@ export default class Chat extends WireComponent {
 }
 ```
 
-```/dev/null/resources/views/adowire/chat.edge#L1-L4
+```ts
 <form adowire:submit="ask">
   <input adowire:model="prompt" />
   <button type="submit">Ask</button>
@@ -636,7 +636,7 @@ export default class Chat extends WireComponent {
 
 Adowire provides a `$wire` magic proxy for Alpine.js interop:
 
-```/dev/null/example.edge#L1-L10
+```ts
 <div x-data>
   {{-- Read state --}}
   <span x-text="$wire.count"></span>
@@ -659,7 +659,7 @@ Adowire ships with **7 Ace commands** for scaffolding and managing components.
 
 Scaffold a new component class and/or Edge template.
 
-```/dev/null/sh#L1-L11
+```ts
 # Component class + view
 node ace make:adowire counter
 
@@ -686,7 +686,7 @@ node ace make:adowire counter --view
 
 List all registered components.
 
-```/dev/null/sh#L1-L4
+```ts
 node ace adowire:list
 
 # Output as JSON
@@ -701,7 +701,7 @@ node ace adowire:list --json
 
 Create a default Adowire layout template.
 
-```/dev/null/sh#L1-L4
+```ts
 node ace adowire:layout
 
 # Custom name
@@ -717,7 +717,7 @@ node ace adowire:layout --name app
 
 Rename or move a component (both class and view), automatically updating the class name.
 
-```/dev/null/sh#L1
+```ts
 node ace adowire:move posts/create posts/entry
 ```
 
@@ -725,7 +725,7 @@ node ace adowire:move posts/create posts/entry
 
 Delete a component's class and view files.
 
-```/dev/null/sh#L1-L4
+```ts
 node ace adowire:delete counter
 
 # Skip confirmation prompt
@@ -740,7 +740,7 @@ node ace adowire:delete counter --force
 
 Publish Adowire's stub templates to your project for customization.
 
-```/dev/null/sh#L1
+```ts
 node ace adowire:stubs
 ```
 
@@ -754,7 +754,7 @@ Stubs are published to `stubs/vendor/adowire/`.
 
 Initial setup command (run once after installation).
 
-```/dev/null/sh#L1
+```ts
 node ace configure adowire
 ```
 
@@ -764,7 +764,7 @@ node ace configure adowire
 
 After running `node ace configure adowire`, you'll find `config/adowire.ts` in your project:
 
-```/dev/null/config/adowire.ts#L1-L17
+```ts
 import { defineConfig } from 'adowire'
 
 export default defineConfig({
@@ -851,7 +851,7 @@ Adowire includes multiple layers of protection:
 
 Contributions are welcome! Since the project is in alpha, please open an issue first to discuss what you'd like to change.
 
-```/dev/null/sh#L1-L6
+```ts
 # Clone & install
 git clone https://github.com/hackerrahul/adowire.git
 cd adowire && npm install
