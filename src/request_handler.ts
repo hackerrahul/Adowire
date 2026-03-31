@@ -443,11 +443,27 @@ export class WireRequestHandler {
         await (component as any)[updatingShorthand](value)
       }
 
-      // Apply value — support nested dot-paths
+      // Apply value — support nested dot-paths.
+      //
+      // Guard: AdonisJS bodyparser's `convertEmptyStringsToNull: true` (the
+      // default) converts every `""` in the POST body to `null`. When a
+      // string property is cleared in the browser (e.g. the user erases a
+      // search input) the update arrives as `null` rather than `""`.  Apply
+      // the same fix used in snapshot hydration: restore `null` → `""` when
+      // the component's current property is a string.
+      let resolvedValue = value
+      if (
+        resolvedValue === null &&
+        subKey === undefined &&
+        typeof (component as any)[rootProp] === 'string'
+      ) {
+        resolvedValue = ''
+      }
+
       if (subKey !== undefined) {
         setNestedValue(component, rootProp, subKey, value)
       } else {
-        ;(component as any)[rootProp] = value
+        ;(component as any)[rootProp] = resolvedValue
       }
 
       // updated(name, value) generic hook

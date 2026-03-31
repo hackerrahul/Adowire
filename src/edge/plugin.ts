@@ -17,6 +17,21 @@
  * The provider uses approach (2) because it is more robust: tags are
  * available immediately after boot() without depending on when the first
  * renderer is created.
+ *
+ * **Important — @error tag precedence:**
+ *
+ * The `@adonisjs/session` package registers its own `@error` tag that reads
+ * from session flash messages (`state.flashMessages`). Since session's edge
+ * plugin runs as a deferred `edge.use()` plugin (executed lazily inside
+ * `createRenderer()`), it can overwrite adowire's `@error` tag even when
+ * adowire registers first during `boot()`.
+ *
+ * To guarantee adowire's `@error` tag always wins, we use `edge.onRender()`
+ * to re-register the tag on every `createRenderer()` call — after all
+ * plugins (including session's) have executed. This ensures that
+ * `@error('field')` in wire component templates always reads from
+ * `state.$errors` (the component's validation errors) rather than from
+ * session flash messages.
  */
 
 import { adowireStylesTag } from './tags/adowire_styles.js'
@@ -57,6 +72,11 @@ const registeredInstances = new WeakSet<object>()
  *  - @adowire / @end  — embedded child component renderer
  *  - @error / @end    — validation error block
  *
+ * Also installs an `onRender` callback that re-registers the `@error` tag
+ * on every `createRenderer()` call, ensuring it is never overwritten by
+ * `@adonisjs/session`'s deferred plugin which registers its own `@error`
+ * tag for session flash messages.
+ *
  * Idempotent — safe to call multiple times on the same Edge instance.
  * A module-level `WeakSet` tracks which instances have already been
  * registered; subsequent calls are no-ops.
@@ -76,6 +96,26 @@ export function registerAdowireTags(edge: any): void {
   // Using a named exported function ensures Edge.js's Set-based processor
   // registry deduplicates it correctly if process() is ever called twice.
   edge.processor.process('raw', adowireHtmlProcessor)
+
+  // ── @error tag precedence guard ───────────────────────────────────────────
+  //
+  // `@adonisjs/session` registers a deferred Edge plugin via `edge.use()`
+  // that adds its own `@error` tag reading from `state.flashMessages`.
+  // Deferred plugins execute inside `createRenderer()`, which happens AFTER
+  // our `boot()` registration above — so session's tag overwrites ours.
+  //
+  // `edge.onRender()` registers a callback that runs at the END of every
+  // `createRenderer()` call, after all plugins have executed. By
+  // re-registering our `@error` tag here, we guarantee it always takes
+  // precedence regardless of plugin execution order.
+  //
+  // This is safe and cheap: `registerTag()` is a simple property assignment
+  // on the shared `tags` object (`tags['error'] = errorTag`).
+  if (typeof edge.onRender === 'function') {
+    edge.onRender((_renderer: any) => {
+      edge.registerTag(errorTag)
+    })
+  }
 }
 
 /**
